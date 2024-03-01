@@ -269,6 +269,9 @@ app.delete("/delete_employee/:_id", async (req, res) => {
     console.log(emp_code);
     const connection = await oracledb.getConnection(dbConfig);
     const result = await connection.execute(`delete from emp where emp_code = '${emp_code}'`);
+    await connection.commit();
+    // Release the connection back to the pool
+    await connection.close();
     console.log(result);
     console.log('Data Deleted successfully');
   } catch (error) {
